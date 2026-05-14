@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ClinicFlow Pro | Dept of Health</title>
+    <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = "login.html";
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for professional medical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-area">
+            <!-- Using a placeholder: Replace with your actual logo file later -->
+
+            <img src="C:\Users\BongekaM\Desktop\Websites\ClinicSystem_Pro\images\logo.jpeg" alt="DoH Logo">
+        </div>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search by Name or ID..." onkeyup="filterRecords()">
+        </div>
+        <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </nav>
+
+    <main class="dashboard">
+        <!-- Input Section -->
+        <section class="card intake-form">
+            <h2><i class="fas fa-user-plus"></i> Patient Intake</h2>
+            <form id="patientForm">
+                <input type="text" id="fullName" placeholder="Full Name" required>
+                <input type="text" id="patientID" placeholder="ID/Passport Number" required>
+                <input type="tel" id="contact" placeholder="Contact Number" required>
+                <textarea id="symptoms" placeholder="Capture symptoms (e.g., Chest pain, Fever, Cough)"></textarea>
+                <button type="submit" class="btn-primary">Register Patient</button>
+            </form>
+        </section>
+
+        <!-- Display Section -->
+        <section class="card records-list">
+            <h2><i class="fas fa-hospital-user"></i> Live Queue</h2>
+            <div class="table-wrapper">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>ID Number</th>
+                            <th>Priority</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordBody"></tbody>
+                </table>
+            </div>
+            <button onclick="exportToCSV()" class="btn-export">Export Daily CSV</button>
+        </section>
+    </main>
+
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

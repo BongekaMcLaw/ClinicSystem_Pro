@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ClinicFlow Pro | Dept of Health</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for professional medical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="login-body">
+    <div class="login-card">
+        <img src="images\background.jpeg" alt="DoH Logo">
+        <h2 id="formTitle">Staff Login</h2>
+        
+        <form id="authForm">
+            <!-- Validation: Staff ID must be HW followed by 3 digits -->
+            <input type="text" id="username" placeholder="Staff ID (e.g., HW001)" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <p id="authMessage" style="color: #dc3545; display: none; font-size: 14px;"></p>
+            <button type="submit" id="authBtn" class="btn-primary">Access Portal</button>
+        </form>
+
+        <div style="margin-top: 15px; font-size: 14px;">
+            <a href="#" id="toggleLink">New Staff? Register here</a>
+        </div>
+    </div>
+
+    <script>
+        const authForm = document.getElementById('authForm');
+        const toggleLink = document.getElementById('toggleLink');
+        const formTitle = document.getElementById('formTitle');
+        const authBtn = document.getElementById('authBtn');
+        const msg = document.getElementById('authMessage');
+
+        let isRegistering = false;
+
+        toggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            isRegistering = !isRegistering;
+            formTitle.innerText = isRegistering ? "Staff Registration" : "Staff Login";
+            authBtn.innerText = isRegistering ? "Create Account" : "Access Portal";
+            toggleLink.innerText = isRegistering ? "Already have account? Login" : "New Staff? Register here";
+            msg.style.display = "none";
+        });
+
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            // Basic Validation for Security
+            if (pass.length < 6) {
+                msg.innerText = "Password must be at least 6 characters.";
+                msg.style.display = "block";
+                return;
+            }
+
+            if (isRegistering) {
+                // PERSISTENT STORAGE: Saves credentials to the browser
+                localStorage.setItem('staffUser', user);
+                localStorage.setItem('staffPass', pass);
+                alert("Staff Registered Successfully! Please Login.");
+                location.reload(); 
+            } else {
+                // VERIFICATION: Compare input with stored credentials
+                const savedUser = localStorage.getItem('staffUser');
+                const savedPass = localStorage.getItem('staffPass');
+
+                if (user === savedUser && pass === savedPass) {
+                    // SESSION STORAGE: Only lasts until tab is closed[cite: 1]
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    window.location.href = "index.html";
+                } else {
+                    msg.innerText = "Invalid Staff ID or Password.";
+                    msg.style.display = "block";
+                }
+            }
+        });
+    </script>
+</body>
